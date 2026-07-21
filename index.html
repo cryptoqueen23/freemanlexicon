@@ -38,48 +38,82 @@
     background:var(--ink) !important;
     border-bottom:3px solid var(--gold);
   }
-  .nav-tab-btn{
-    border:1px solid var(--line);
+  .source-menu-wrap{ position:relative; }
+  .source-menu-btn{
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+    width:100%;
+    max-width:26rem;
     background:#fff;
-    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:.65rem 1rem;
     font-family:'Source Serif 4',serif;
     font-weight:600;
+    color:var(--ink);
+    text-align:left;
   }
-  .nav-tab-btn.active-webster{
-    background:var(--gold);
-    border-color:var(--gold);
-    color:#fff;
+  .source-menu-btn:hover{ border-color:var(--gold); }
+  .burger-icon{
+    display:inline-flex;
+    flex-direction:column;
+    justify-content:space-between;
+    width:1.1rem;
+    height:.85rem;
+    flex:0 0 auto;
   }
-  .nav-tab-btn.active-law{
-    background:var(--law-navy);
-    border-color:var(--law-navy);
-    color:#fff;
+  .burger-icon span{
+    display:block;
+    height:2px;
+    background:var(--ink);
+    border-radius:1px;
   }
-  .nav-tab-btn.active-ucc{
-    background:var(--ucc-green);
-    border-color:var(--ucc-green);
-    color:#fff;
+  #sourceMenuLabel{ flex:1 1 auto; }
+  .menu-caret{ color:#8a8478; font-size:.8rem; flex:0 0 auto; }
+  .source-menu-panel{
+    position:absolute;
+    top:calc(100% + .4rem);
+    left:0;
+    z-index:20;
+    width:100%;
+    max-width:26rem;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:2px;
+    box-shadow:0 8px 24px rgba(32,36,31,.15);
+    padding:.75rem;
   }
-  .nav-tab-btn.active-guides{
-    background:var(--guides-blue);
-    border-color:var(--guides-blue);
-    color:#fff;
+  .source-menu-group + .source-menu-group{ margin-top:.6rem; padding-top:.6rem; border-top:1px dashed var(--line); }
+  .source-menu-group-title{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:#8a8478;
+    font-weight:600;
+    margin-bottom:.3rem;
+    padding:0 .3rem;
   }
-  .nav-tab-btn.active-const{
-    background:var(--const-red);
-    border-color:var(--const-red);
-    color:#fff;
+  .source-menu-item{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    border-radius:2px;
+    padding:.5rem .6rem;
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+    color:var(--ink);
   }
-  .nav-tab-btn.active-decl{
-    background:var(--decl-brown);
-    border-color:var(--decl-brown);
-    color:#fff;
-  }
-  .nav-tab-btn.active-tx{
-    background:var(--tx-blue);
-    border-color:var(--tx-blue);
-    color:#fff;
-  }
+  .source-menu-item:hover{ background:var(--paper-2); }
+  .source-menu-item.active-webster{ background:var(--gold); color:#fff; }
+  .source-menu-item.active-law{ background:var(--law-navy); color:#fff; }
+  .source-menu-item.active-ucc{ background:var(--ucc-green); color:#fff; }
+  .source-menu-item.active-guides{ background:var(--guides-blue); color:#fff; }
+  .source-menu-item.active-const{ background:var(--const-red); color:#fff; }
+  .source-menu-item.active-decl{ background:var(--decl-brown); color:#fff; }
+  .source-menu-item.active-tx{ background:var(--tx-blue); color:#fff; }
   #quizToggle.active{
     background:var(--ink);
     color:#fff;
@@ -384,15 +418,31 @@
 
 <div class="container py-4">
 
-  <!-- Dictionary switcher -->
-  <div class="d-flex gap-2 mb-3 flex-wrap">
-    <button id="btnWebster" class="btn nav-tab-btn active-webster px-3 py-2">Webster's Revised Unabridged (1913)</button>
-    <button id="btnLaw" class="btn nav-tab-btn px-3 py-2">Black's Law Dictionary (2nd Ed., 1910)</button>
-    <button id="btnUcc" class="btn nav-tab-btn px-3 py-2">Uniform Commercial Code</button>
-    <button id="btnGuides" class="btn nav-tab-btn px-3 py-2">Legal Literacy Guides</button>
-    <button id="btnConst" class="btn nav-tab-btn px-3 py-2">U.S. Constitution</button>
-    <button id="btnDecl" class="btn nav-tab-btn px-3 py-2">Declaration of Independence</button>
-    <button id="btnTexas" class="btn nav-tab-btn px-3 py-2">Texas Constitution</button>
+  <!-- Source menu (burger) -->
+  <div class="source-menu-wrap mb-3">
+    <button id="sourceMenuBtn" class="btn source-menu-btn" aria-expanded="false" aria-controls="sourceMenuPanel">
+      <span class="burger-icon"><span></span><span></span><span></span></span>
+      <span id="sourceMenuLabel">Webster's Revised Unabridged (1913)</span>
+      <span class="menu-caret">▾</span>
+    </button>
+    <div id="sourceMenuPanel" class="source-menu-panel" style="display:none;">
+      <div class="source-menu-group">
+        <div class="source-menu-group-title">Dictionaries</div>
+        <button id="btnWebster" class="source-menu-item active-webster" data-src="webster">Webster's Revised Unabridged (1913)</button>
+        <button id="btnLaw" class="source-menu-item" data-src="law">Black's Law Dictionary (2nd Ed., 1910)</button>
+        <button id="btnUcc" class="source-menu-item" data-src="ucc">Uniform Commercial Code</button>
+      </div>
+      <div class="source-menu-group">
+        <div class="source-menu-group-title">Founding Documents</div>
+        <button id="btnConst" class="source-menu-item" data-src="const">U.S. Constitution</button>
+        <button id="btnDecl" class="source-menu-item" data-src="decl">Declaration of Independence</button>
+        <button id="btnTexas" class="source-menu-item" data-src="tx">Texas Constitution</button>
+      </div>
+      <div class="source-menu-group">
+        <div class="source-menu-group-title">Guides</div>
+        <button id="btnGuides" class="source-menu-item" data-src="guides">Legal Literacy Guides</button>
+      </div>
+    </div>
   </div>
 
   <div class="source-banner" id="sourceBanner"></div>
@@ -498,6 +548,35 @@
   const clearBtn = document.getElementById('clearBtn');
   const quizToggle = document.getElementById('quizToggle');
   const compareToggle = document.getElementById('compareToggle');
+  const sourceMenuBtn = document.getElementById('sourceMenuBtn');
+  const sourceMenuPanel = document.getElementById('sourceMenuPanel');
+  const sourceMenuLabel = document.getElementById('sourceMenuLabel');
+
+  const SOURCE_LABELS = {
+    webster: "Webster's Revised Unabridged (1913)",
+    law: "Black's Law Dictionary (2nd Ed., 1910)",
+    ucc: "Uniform Commercial Code",
+    const: "U.S. Constitution",
+    decl: "Declaration of Independence",
+    tx: "Texas Constitution",
+    guides: "Legal Literacy Guides",
+  };
+
+  function closeSourceMenu(){
+    sourceMenuPanel.style.display = 'none';
+    sourceMenuBtn.setAttribute('aria-expanded', 'false');
+  }
+  function toggleSourceMenu(){
+    const open = sourceMenuPanel.style.display !== 'none';
+    sourceMenuPanel.style.display = open ? 'none' : 'block';
+    sourceMenuBtn.setAttribute('aria-expanded', String(!open));
+  }
+  sourceMenuBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSourceMenu(); });
+  document.addEventListener('click', (e) => {
+    if (!sourceMenuPanel.contains(e.target) && e.target !== sourceMenuBtn){
+      closeSourceMenu();
+    }
+  });
 
   // Normalize each source into a common shape for rendering:
   // { heading, sub, def, filterKey }
@@ -855,6 +934,8 @@
       state.compare = false;
       compareToggle.classList.remove('active');
     }
+    sourceMenuLabel.textContent = SOURCE_LABELS[src] || src;
+    closeSourceMenu();
     buildFilterBar(); render();
   }
 
