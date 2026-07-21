@@ -34,6 +34,13 @@
     font-weight:700;
     letter-spacing:.02em;
   }
+  .brand-logo{
+    width:2.5rem;
+    height:2.5rem;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid var(--gold);
+  }
   .navbar{
     background:var(--ink) !important;
     border-bottom:3px solid var(--gold);
@@ -186,21 +193,54 @@
     border-radius:2px;
     font-size:1.15rem;
     padding:.7rem 1rem;
+    flex:1 1 220px;
+    min-width:0;
+  }
+  @media (max-width:576px){
+    .search-toolbar{ flex-direction:column; }
+    .search-toolbar #searchInput,
+    .search-toolbar button{ width:100%; }
   }
   #searchInput:focus{
     box-shadow:0 0 0 .15rem rgba(179,32,42,.35);
     border-color:var(--gold);
   }
   .hero{
+    position:relative;
     padding:2.5rem 0 1.5rem;
+    overflow:hidden;
+  }
+  .hero-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:.16;
+    z-index:0;
+    pointer-events:none;
+  }
+  .hero-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(248,249,251,.6), rgba(248,249,251,.92));
+    z-index:1;
+    pointer-events:none;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-video{ display:none; }
   }
   .hero-title{
+    position:relative;
+    z-index:2;
     font-family:'Source Serif 4',serif;
     font-weight:700;
     font-size:clamp(1.8rem,4vw,2.6rem);
     margin-bottom:.6rem;
   }
   .hero-sub{
+    position:relative;
+    z-index:2;
     color:#3a4a5c;
     font-size:1.05rem;
     line-height:1.6;
@@ -407,15 +447,21 @@
 
 <nav class="navbar navbar-dark py-3">
   <div class="container">
-    <span class="navbar-brand brand-mark fs-4 mb-0">Freeman Lexicon</span>
-    <span class="text-white-50 small">Public-domain reference, free to use</span>
+    <span class="navbar-brand brand-mark fs-4 mb-0 d-flex align-items-center gap-2">
+      <img src="logo-eagle.png" alt="" class="brand-logo">
+      Freeman Lexicon
+    </span>
   </div>
 </nav>
 
 <div class="container">
   <div class="hero">
+    <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
+      <source src="hero-bg.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
     <h1 class="hero-title">Search History's Original Definitions</h1>
-    <p class="hero-sub">Explore over 98,000 public-domain dictionary entries, historical legal references, and classic legal sources — all in one searchable library.</p>
+    <p class="hero-sub">Explore more than 98,000 dictionary entries, legal references, and founding documents from original historical sources.</p>
   </div>
 </div>
 
@@ -452,7 +498,7 @@
 
   <!-- Search + quiz/compare toggles -->
   <label for="searchInput" class="visually-hidden">Search a word or phrase</label>
-  <div class="mb-2 d-flex gap-2">
+  <div class="mb-2 d-flex gap-2 flex-wrap search-toolbar">
     <input type="text" id="searchInput" class="form-control" placeholder="Search Webster 1913, Black's Law 1910, UCC…" autocomplete="off">
     <button id="compareToggle" class="btn btn-outline-dark text-nowrap">Compare</button>
     <button id="quizToggle" class="btn btn-outline-dark text-nowrap">Quiz Mode</button>
@@ -465,12 +511,11 @@
     <span class="source-badge"><span class="check">✓</span> U.S. Constitution</span>
     <span class="source-badge"><span class="check">✓</span> Declaration of Independence</span>
     <span class="source-badge"><span class="check">✓</span> Texas Constitution</span>
-    <span class="source-badge"><span class="check">✓</span> Public Domain</span>
   </div>
 
   <div class="why-card">
-    <div class="why-card-title">Why historical dictionaries?</div>
-    <p class="why-card-body">Language changes over time. Modern dictionaries often update definitions to reflect current usage. Freeman Lexicon preserves historical editions so readers can understand words in the context they carried when older laws, contracts, and court opinions were written.</p>
+    <div class="why-card-title">Why Historical Sources?</div>
+    <p class="why-card-body">Language evolves over time. Freeman Lexicon preserves historical dictionaries and legal references so you can research words in the context they were originally written and understood.</p>
   </div>
 
   <!-- A–Z quick filter -->
@@ -496,8 +541,8 @@
   <div class="container">
     <div class="support-card">
       <div class="support-col">
-        <div class="support-title">Help Preserve Public Knowledge</div>
-        <p class="support-text">Freeman Lexicon is free, contains no ads, and is built entirely from public-domain sources. Donations help fund hosting, indexing, and new historical collections.</p>
+        <div class="support-title">Help Preserve This Library</div>
+        <p class="support-text">Freeman Lexicon is free to use and independently maintained. Your support helps expand the collection, improve search, and keep this historical reference library available to everyone.</p>
         <div class="crypto-box">
           <div class="crypto-label">Solana (SOL)</div>
           <div class="crypto-address" id="cryptoAddress">6UTotAMeUqtytR9pdUmh6h2B2StiBceiwiQMqMYSPzXU</div>
@@ -505,10 +550,10 @@
         </div>
       </div>
       <div class="support-col">
-        <div class="support-title">More from Phoenix Securitas</div>
+        <div class="support-title">Sponsored by Phoenix Securitas</div>
         <p class="support-text">This reference library is one part of a larger ecosystem. Explore the rest:</p>
         <div class="flywheel-links">
-          <a href="https://tree.phoenixsecuritas.com" target="_blank" rel="noopener">Phoenix Securitas — All Links</a>
+          <a href="https://www.phoenixsecuritas.com/" target="_blank" rel="noopener">Visit Phoenix Securitas →</a>
         </div>
       </div>
     </div>
@@ -516,13 +561,16 @@
 </section>
 
 <footer class="text-center text-muted py-4 small">
-  Webster's Revised Unabridged Dictionary (1913 ed., via Project Gutenberg) — public domain.<br>
-  Black's Law Dictionary, 2nd Edition (1910) by Henry Campbell Black — public domain.<br>
-  Uniform Commercial Code — enacted statutory text is public domain (government-edict works aren't copyrightable); ALI/ULC official commentary is not included.<br>
-  U.S. Constitution and Amendments — full text verified against the National Archives official transcriptions; a U.S. government work, public domain.<br>
-  Declaration of Independence — full text verified against the National Archives official transcription; public domain.<br>
-  Texas Constitution — enacted state constitutional text is public domain (government-edict works aren't copyrightable); curated core provisions, not the full ~90,000-word text.<br>
-  Modern editions of Black's Law Dictionary remain copyrighted and are not used here.
+  <h2 class="h6 text-uppercase mb-2">Sources</h2>
+  <ul class="list-unstyled mb-2">
+    <li>Webster's Revised Unabridged Dictionary (1913)</li>
+    <li>Black's Law Dictionary, 2nd Edition (1910)</li>
+    <li>Uniform Commercial Code</li>
+    <li>U.S. Constitution</li>
+    <li>Declaration of Independence</li>
+    <li>Texas Constitution</li>
+  </ul>
+  <p class="fst-italic mb-0">Modern editions of Black's Law Dictionary remain under copyright and are not included.</p>
 </footer>
 
 <script src="webster-data.js"></script>
