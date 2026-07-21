@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reference Library — Webster's (1913), Black's Law (1910) &amp; UCC</title>
+<title>Freeman Lexicon — Public-Domain Reference Library</title>
 
 <!-- Bootstrap 5 (free, CDN) -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
@@ -139,6 +139,91 @@
     box-shadow:0 0 0 .15rem rgba(138,109,59,.35);
     border-color:var(--gold);
   }
+  .hero{
+    padding:2.5rem 0 1.5rem;
+  }
+  .hero-title{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    margin-bottom:.6rem;
+  }
+  .hero-sub{
+    color:#4a4638;
+    font-size:1.05rem;
+    line-height:1.6;
+    max-width:46rem;
+  }
+  .source-badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.5rem;
+    margin:.75rem 0 1.25rem;
+  }
+  .source-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:.35rem;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:1rem;
+    padding:.3rem .75rem;
+    font-size:.82rem;
+    font-weight:600;
+    color:#4a4638;
+  }
+  .source-badge .check{
+    color:var(--gold);
+    font-weight:700;
+  }
+  .why-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:4px solid var(--gold);
+    border-radius:2px;
+    padding:1.1rem 1.3rem;
+    margin-bottom:1.5rem;
+  }
+  .why-card-title{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    font-size:1.05rem;
+    margin-bottom:.4rem;
+  }
+  .why-card-body{
+    color:#4a4638;
+    line-height:1.6;
+    font-size:.95rem;
+    margin:0;
+  }
+  #compareToggle.active{
+    background:var(--ink);
+    color:#fff;
+  }
+  .compare-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:1rem;
+    align-items:start;
+  }
+  .compare-col-title{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    font-size:1rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-bottom:.6rem;
+    padding-bottom:.4rem;
+    border-bottom:2px solid var(--line);
+  }
+  .compare-col-title.webster{ color:var(--gold); border-color:var(--gold); }
+  .compare-col-title.law{ color:var(--law-navy); border-color:var(--law-navy); }
+  .compare-col-title.ucc{ color:var(--ucc-green); border-color:var(--ucc-green); }
+  .compare-empty{
+    color:#8a8478;
+    font-size:.9rem;
+    font-style:italic;
+  }
   .entry-card{
     background:#fff;
     border:1px solid var(--line);
@@ -264,10 +349,17 @@
 
 <nav class="navbar navbar-dark py-3">
   <div class="container">
-    <span class="navbar-brand brand-mark fs-4 mb-0">Reference Library</span>
+    <span class="navbar-brand brand-mark fs-4 mb-0">Freeman Lexicon</span>
     <span class="text-white-50 small">Public-domain reference, free to use</span>
   </div>
 </nav>
+
+<div class="container">
+  <div class="hero">
+    <h1 class="hero-title">Search History's Original Definitions</h1>
+    <p class="hero-sub">Explore over 98,000 public-domain dictionary entries, historical legal references, and classic legal sources — all in one searchable library.</p>
+  </div>
+</div>
 
 <div class="container py-4">
 
@@ -281,10 +373,24 @@
 
   <div class="source-banner" id="sourceBanner"></div>
 
-  <!-- Search + quiz toggle -->
-  <div class="mb-3 d-flex gap-2">
-    <input type="text" id="searchInput" class="form-control" placeholder="Search a word or phrase…" autocomplete="off">
+  <!-- Search + quiz/compare toggles -->
+  <label for="searchInput" class="visually-hidden">Search a word or phrase</label>
+  <div class="mb-2 d-flex gap-2">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search Webster 1913, Black's Law 1910, UCC…" autocomplete="off">
+    <button id="compareToggle" class="btn btn-outline-dark text-nowrap">Compare</button>
     <button id="quizToggle" class="btn btn-outline-dark text-nowrap">Quiz Mode</button>
+  </div>
+
+  <div class="source-badges">
+    <span class="source-badge"><span class="check">✓</span> Webster 1913</span>
+    <span class="source-badge"><span class="check">✓</span> Black's Law 1910</span>
+    <span class="source-badge"><span class="check">✓</span> UCC</span>
+    <span class="source-badge"><span class="check">✓</span> Public Domain</span>
+  </div>
+
+  <div class="why-card">
+    <div class="why-card-title">Why historical dictionaries?</div>
+    <p class="why-card-body">Language changes over time. Modern dictionaries often update definitions to reflect current usage. Freeman Lexicon preserves historical editions so readers can understand words in the context they carried when older laws, contracts, and court opinions were written.</p>
   </div>
 
   <!-- A–Z quick filter -->
@@ -301,14 +407,17 @@
   <!-- Quiz -->
   <div id="quizArea" style="display:none;"></div>
 
+  <!-- Compare -->
+  <div id="compareArea" style="display:none;"></div>
+
 </div>
 
 <section class="support-section">
   <div class="container">
     <div class="support-card">
       <div class="support-col">
-        <div class="support-title">Support This Project</div>
-        <p class="support-text">This site is free and built entirely on public-domain material. If it's useful to you, a donation helps keep it running and growing.</p>
+        <div class="support-title">Help Preserve Public Knowledge</div>
+        <p class="support-text">Freeman Lexicon is free, contains no ads, and is built entirely from public-domain sources. Donations help fund hosting, indexing, and new historical collections.</p>
         <div class="crypto-box">
           <div class="crypto-label">Solana (SOL)</div>
           <div class="crypto-address" id="cryptoAddress">6UTotAMeUqtytR9pdUmh6h2B2StiBceiwiQMqMYSPzXU</div>
@@ -340,7 +449,7 @@
 <script src="ucc-data.js"></script>
 <script src="literacy-data.js"></script>
 <script>
-  const state = { source: 'webster', query: '', filter: null, quiz: false };
+  const state = { source: 'webster', query: '', filter: null, quiz: false, compare: false };
 
   const btnWebster = document.getElementById('btnWebster');
   const btnLaw = document.getElementById('btnLaw');
@@ -349,26 +458,35 @@
   const searchInput = document.getElementById('searchInput');
   const resultsEl = document.getElementById('results');
   const quizArea = document.getElementById('quizArea');
+  const compareArea = document.getElementById('compareArea');
   const resultCountEl = document.getElementById('resultCount');
   const sourceBanner = document.getElementById('sourceBanner');
   const alphaBar = document.getElementById('alphaBar');
   const clearBtn = document.getElementById('clearBtn');
   const quizToggle = document.getElementById('quizToggle');
+  const compareToggle = document.getElementById('compareToggle');
 
   // Normalize each source into a common shape for rendering:
   // { heading, sub, def, filterKey }
+  // Each source's underlying data is static, so the normalized shape is
+  // computed once per source and cached — otherwise this remaps all 98k+
+  // Webster entries on every single keystroke.
+  const normalizedCache = {};
   function normalized(){
+    if (normalizedCache[state.source]) return normalizedCache[state.source];
+    let result;
     if (state.source === 'webster'){
-      return WEBSTER_1913.map(e => ({ heading: e.word, sub: e.pos, def: e.def, filterKey: e.word[0] }));
+      result = WEBSTER_1913.map(e => ({ heading: e.word, sub: e.pos, def: e.def, filterKey: e.word[0] }));
+    } else if (state.source === 'law'){
+      result = BLACKS_LAW_1910.map(e => ({ heading: e.word, sub: e.pos, def: e.def, filterKey: e.word[0] }));
+    } else if (state.source === 'ucc'){
+      result = UCC_SECTIONS.map(e => ({ heading: e.code, sub: e.title, def: e.def, filterKey: e.article }));
+    } else {
+      // guides
+      result = LITERACY_GUIDES.map(e => ({ heading: e.title, sub: e.category, def: e.body, filterKey: e.category, related: e.related }));
     }
-    if (state.source === 'law'){
-      return BLACKS_LAW_1910.map(e => ({ heading: e.word, sub: e.pos, def: e.def, filterKey: e.word[0] }));
-    }
-    if (state.source === 'ucc'){
-      return UCC_SECTIONS.map(e => ({ heading: e.code, sub: e.title, def: e.def, filterKey: e.article }));
-    }
-    // guides
-    return LITERACY_GUIDES.map(e => ({ heading: e.title, sub: e.category, def: e.body, filterKey: e.category, related: e.related }));
+    normalizedCache[state.source] = result;
+    return result;
   }
 
   function updateTabs(){
@@ -377,6 +495,7 @@
     btnUcc.classList.toggle('active-ucc', state.source === 'ucc');
     btnGuides.classList.toggle('active-guides', state.source === 'guides');
     quizToggle.style.display = state.source === 'guides' ? 'none' : 'inline-block';
+    compareToggle.style.display = state.source === 'guides' ? 'none' : 'inline-block';
     if (state.source === 'webster'){
       sourceBanner.textContent = `${WEBSTER_1913.length.toLocaleString()} entries — Webster's Revised Unabridged Dictionary, 1913 edition (public domain).`;
     } else if (state.source === 'law'){
@@ -436,6 +555,17 @@
   function render(){
     updateTabs();
 
+    if (state.compare){
+      resultsEl.style.display = 'none';
+      alphaBar.style.display = 'none';
+      quizArea.style.display = 'none';
+      compareArea.style.display = 'block';
+      document.getElementById('resultCount').parentElement.style.display = 'none';
+      renderCompare();
+      return;
+    }
+    compareArea.style.display = 'none';
+
     if (state.quiz){
       resultsEl.style.display = 'none';
       alphaBar.style.display = 'none';
@@ -466,7 +596,11 @@
     if (state.source === 'ucc'){
       data = [...data].sort((a,b) => a.heading.localeCompare(b.heading, undefined, { numeric: true }));
     } else if (state.source !== 'guides'){
-      data = [...data].sort((a,b) => a.heading.localeCompare(b.heading));
+      // Plain ordinal comparison instead of localeCompare: for broad queries
+      // (e.g. a single letter) this can sort tens of thousands of entries
+      // just to keep the first 300, and localeCompare's locale-aware
+      // collation is far more expensive than a straight string compare.
+      data = [...data].sort((a,b) => a.heading < b.heading ? -1 : a.heading > b.heading ? 1 : 0);
     }
 
     resultCountEl.textContent = `${data.length} entr${data.length === 1 ? 'y' : 'ies'}`;
@@ -510,6 +644,66 @@
         <div class="entry-def">${e.def}</div>
       </div>
     `).join('') + (capped ? `<div class="empty-state">Showing first ${RENDER_CAP} results — refine your search to narrow further.</div>` : '');
+  }
+
+  // ---------------- Compare mode ----------------
+  // Looks a word up across all three dictionary sources at once, independent
+  // of whichever tab (Webster/Law/UCC) happens to be active.
+  function findEntryMatches(list, keyFn, q, cap){
+    const exact = list.filter(e => keyFn(e).toLowerCase() === q);
+    if (exact.length) return exact.slice(0, cap);
+    return list.filter(e => keyFn(e).toLowerCase().includes(q)).slice(0, cap);
+  }
+
+  function compareColumn(title, cls, items, cardHtml){
+    return `
+      <div class="compare-col">
+        <div class="compare-col-title ${cls}">${title}</div>
+        ${items.length ? items.map(cardHtml).join('') : '<div class="compare-empty">No match found.</div>'}
+      </div>
+    `;
+  }
+
+  function renderCompare(){
+    const q = state.query.trim().toLowerCase();
+    if (!q){
+      compareArea.innerHTML = `<div class="empty-state">Type a word above to compare its definition across Webster's, Black's Law, and the UCC.</div>`;
+      return;
+    }
+
+    const CAP = 5;
+    const websterMatches = findEntryMatches(WEBSTER_1913, e => e.word, q, CAP);
+    const lawMatches = findEntryMatches(BLACKS_LAW_1910, e => e.word, q, CAP);
+    const uccMatches = UCC_SECTIONS
+      .filter(e => e.title.toLowerCase().includes(q) || e.def.toLowerCase().includes(q))
+      .sort((a,b) => a.code.localeCompare(b.code, undefined, { numeric: true }))
+      .slice(0, CAP);
+
+    compareArea.innerHTML = `
+      <div class="compare-grid">
+        ${compareColumn("Webster's 1913", 'webster', websterMatches, e => `
+          <div class="entry-card">
+            <span class="entry-word">${e.word}</span>
+            ${e.pos ? `<span class="entry-pos">${e.pos}</span>` : ''}
+            <div class="entry-def">${e.def}</div>
+          </div>
+        `)}
+        ${compareColumn("Black's Law 1910", 'law', lawMatches, e => `
+          <div class="entry-card law">
+            <span class="entry-word">${e.word}</span>
+            ${e.pos ? `<span class="entry-pos">${e.pos}</span>` : ''}
+            <div class="entry-def">${e.def}</div>
+          </div>
+        `)}
+        ${compareColumn('UCC', 'ucc', uccMatches, e => `
+          <div class="entry-card ucc">
+            <span class="entry-word">${e.code}</span>
+            <span class="entry-pos">${e.title}</span>
+            <div class="entry-def">${e.def}</div>
+          </div>
+        `)}
+      </div>
+    `;
   }
 
   // ---------------- Quiz mode ----------------
@@ -582,6 +776,10 @@
     state.source = src; state.filter = null; searchInput.value=''; state.query=''; state.quiz = false;
     quizCurrent = null;
     quizToggle.classList.remove('active');
+    if (src === 'guides'){
+      state.compare = false;
+      compareToggle.classList.remove('active');
+    }
     buildFilterBar(); render();
   }
 
@@ -589,8 +787,13 @@
   btnLaw.addEventListener('click', () => switchSource('law'));
   btnUcc.addEventListener('click', () => switchSource('ucc'));
   btnGuides.addEventListener('click', () => switchSource('guides'));
+  let searchDebounce = null;
   searchInput.addEventListener('input', (e) => {
-    state.query = e.target.value; state.filter = null; render();
+    const value = e.target.value;
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+      state.query = value; state.filter = null; render();
+    }, 150);
   });
   clearBtn.addEventListener('click', () => {
     state.query=''; state.filter=null; searchInput.value=''; render();
@@ -598,7 +801,20 @@
   quizToggle.addEventListener('click', () => {
     state.quiz = !state.quiz;
     quizToggle.classList.toggle('active', state.quiz);
-    if (state.quiz){ quizCurrent = null; quizScore = { correct: 0, total: 0 }; }
+    if (state.quiz){
+      quizCurrent = null; quizScore = { correct: 0, total: 0 };
+      state.compare = false;
+      compareToggle.classList.remove('active');
+    }
+    render();
+  });
+  compareToggle.addEventListener('click', () => {
+    state.compare = !state.compare;
+    compareToggle.classList.toggle('active', state.compare);
+    if (state.compare){
+      state.quiz = false;
+      quizToggle.classList.remove('active');
+    }
     render();
   });
 
