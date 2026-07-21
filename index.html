@@ -20,6 +20,8 @@
     --ucc-green:#3d5c3a;
     --guides-blue:#2c4a63;
     --const-red:#7a2e2e;
+    --decl-brown:#5c4326;
+    --tx-blue:#0f3d5c;
     --line:#d8cfb8;
   }
   body{
@@ -66,6 +68,16 @@
   .nav-tab-btn.active-const{
     background:var(--const-red);
     border-color:var(--const-red);
+    color:#fff;
+  }
+  .nav-tab-btn.active-decl{
+    background:var(--decl-brown);
+    border-color:var(--decl-brown);
+    color:#fff;
+  }
+  .nav-tab-btn.active-tx{
+    background:var(--tx-blue);
+    border-color:var(--tx-blue);
     color:#fff;
   }
   #quizToggle.active{
@@ -241,6 +253,8 @@
   .entry-card.law{ border-left-color:var(--law-navy); }
   .entry-card.ucc{ border-left-color:var(--ucc-green); }
   .entry-card.const{ border-left-color:var(--const-red); }
+  .entry-card.decl{ border-left-color:var(--decl-brown); }
+  .entry-card.tx{ border-left-color:var(--tx-blue); }
   .entry-word{
     font-family:'Source Serif 4',serif;
     font-weight:700;
@@ -377,6 +391,8 @@
     <button id="btnUcc" class="btn nav-tab-btn px-3 py-2">Uniform Commercial Code</button>
     <button id="btnGuides" class="btn nav-tab-btn px-3 py-2">Legal Literacy Guides</button>
     <button id="btnConst" class="btn nav-tab-btn px-3 py-2">U.S. Constitution</button>
+    <button id="btnDecl" class="btn nav-tab-btn px-3 py-2">Declaration of Independence</button>
+    <button id="btnTexas" class="btn nav-tab-btn px-3 py-2">Texas Constitution</button>
   </div>
 
   <div class="source-banner" id="sourceBanner"></div>
@@ -394,6 +410,8 @@
     <span class="source-badge"><span class="check">✓</span> Black's Law 1910</span>
     <span class="source-badge"><span class="check">✓</span> UCC</span>
     <span class="source-badge"><span class="check">✓</span> U.S. Constitution</span>
+    <span class="source-badge"><span class="check">✓</span> Declaration of Independence</span>
+    <span class="source-badge"><span class="check">✓</span> Texas Constitution</span>
     <span class="source-badge"><span class="check">✓</span> Public Domain</span>
   </div>
 
@@ -449,6 +467,8 @@
   Black's Law Dictionary, 2nd Edition (1910) by Henry Campbell Black — public domain.<br>
   Uniform Commercial Code — enacted statutory text is public domain (government-edict works aren't copyrightable); ALI/ULC official commentary is not included.<br>
   U.S. Constitution and Amendments — full text verified against the National Archives official transcriptions; a U.S. government work, public domain.<br>
+  Declaration of Independence — full text verified against the National Archives official transcription; public domain.<br>
+  Texas Constitution — enacted state constitutional text is public domain (government-edict works aren't copyrightable); curated core provisions, not the full ~90,000-word text.<br>
   Modern editions of Black's Law Dictionary remain copyrighted and are not used here.
 </footer>
 
@@ -457,6 +477,7 @@
 <script src="ucc-data.js"></script>
 <script src="literacy-data.js"></script>
 <script src="constitution-data.js"></script>
+<script src="founding-state-data.js"></script>
 <script>
   const state = { source: 'webster', query: '', filter: null, quiz: false, compare: false };
 
@@ -465,6 +486,8 @@
   const btnUcc = document.getElementById('btnUcc');
   const btnGuides = document.getElementById('btnGuides');
   const btnConst = document.getElementById('btnConst');
+  const btnDecl = document.getElementById('btnDecl');
+  const btnTexas = document.getElementById('btnTexas');
   const searchInput = document.getElementById('searchInput');
   const resultsEl = document.getElementById('results');
   const quizArea = document.getElementById('quizArea');
@@ -493,6 +516,10 @@
       result = UCC_SECTIONS.map(e => ({ heading: e.code, sub: e.title, def: e.def, filterKey: e.article }));
     } else if (state.source === 'const'){
       result = CONSTITUTION_SECTIONS.map(e => ({ heading: e.code, sub: e.title, def: e.def, filterKey: e.part }));
+    } else if (state.source === 'decl'){
+      result = DECLARATION_SECTIONS.map(e => ({ heading: e.code, sub: e.title, def: e.def, filterKey: e.part }));
+    } else if (state.source === 'tx'){
+      result = TEXAS_CONSTITUTION_SECTIONS.map(e => ({ heading: e.code, sub: e.title, def: e.def, filterKey: e.part }));
     } else {
       // guides
       result = LITERACY_GUIDES.map(e => ({ heading: e.title, sub: e.category, def: e.body, filterKey: e.category, related: e.related }));
@@ -507,6 +534,8 @@
     btnUcc.classList.toggle('active-ucc', state.source === 'ucc');
     btnGuides.classList.toggle('active-guides', state.source === 'guides');
     btnConst.classList.toggle('active-const', state.source === 'const');
+    btnDecl.classList.toggle('active-decl', state.source === 'decl');
+    btnTexas.classList.toggle('active-tx', state.source === 'tx');
     quizToggle.style.display = state.source === 'guides' ? 'none' : 'inline-block';
     compareToggle.style.display = state.source === 'guides' ? 'none' : 'inline-block';
     if (state.source === 'webster'){
@@ -517,6 +546,10 @@
       sourceBanner.textContent = `${UCC_SECTIONS.length} core sections — Uniform Commercial Code, Articles 1, 2, 3 & 9 (enacted statutory text is public domain; curated subset, not the full Code).`;
     } else if (state.source === 'const'){
       sourceBanner.textContent = `${CONSTITUTION_SECTIONS.length} sections — full text of the Preamble, all 7 Articles, and all 27 Amendments, verified against the National Archives transcription (U.S. government work, public domain).`;
+    } else if (state.source === 'decl'){
+      sourceBanner.textContent = `${DECLARATION_SECTIONS.length} sections — full text of the Declaration of Independence, verified against the National Archives transcription (public domain).`;
+    } else if (state.source === 'tx'){
+      sourceBanner.textContent = `${TEXAS_CONSTITUTION_SECTIONS.length} core sections — Texas Constitution of 1876, as amended (enacted state constitutional text is public domain; curated subset, not the full ~90,000-word text).`;
     } else {
       sourceBanner.textContent = `${LITERACY_GUIDES.length} plain-language guides for general legal literacy. Not legal advice — for orientation only; consult a licensed attorney for your specific situation.`;
     }
@@ -545,6 +578,24 @@
     }
     if (state.source === 'const'){
       const parts = [...new Set(CONSTITUTION_SECTIONS.map(e => e.part))];
+      parts.forEach(p => {
+        const pill = pillEl(p, true);
+        pill.addEventListener('click', () => { state.filter = state.filter === p ? null : p; render(); });
+        alphaBar.appendChild(pill);
+      });
+      return;
+    }
+    if (state.source === 'decl'){
+      const parts = [...new Set(DECLARATION_SECTIONS.map(e => e.part))];
+      parts.forEach(p => {
+        const pill = pillEl(p, true);
+        pill.addEventListener('click', () => { state.filter = state.filter === p ? null : p; render(); });
+        alphaBar.appendChild(pill);
+      });
+      return;
+    }
+    if (state.source === 'tx'){
+      const parts = [...new Set(TEXAS_CONSTITUTION_SECTIONS.map(e => e.part))];
       parts.forEach(p => {
         const pill = pillEl(p, true);
         pill.addEventListener('click', () => { state.filter = state.filter === p ? null : p; render(); });
@@ -619,7 +670,7 @@
 
     if (state.source === 'ucc'){
       data = [...data].sort((a,b) => a.heading.localeCompare(b.heading, undefined, { numeric: true }));
-    } else if (state.source !== 'guides' && state.source !== 'const'){
+    } else if (state.source !== 'guides' && state.source !== 'const' && state.source !== 'decl' && state.source !== 'tx'){
       // Plain ordinal comparison instead of localeCompare: for broad queries
       // (e.g. a single letter) this can sort tens of thousands of entries
       // just to keep the first 300, and localeCompare's locale-aware
@@ -660,7 +711,7 @@
       return;
     }
 
-    const cardClass = state.source === 'law' ? 'law' : (state.source === 'ucc' ? 'ucc' : (state.source === 'const' ? 'const' : ''));
+    const cardClass = state.source === 'law' ? 'law' : (state.source === 'ucc' ? 'ucc' : (state.source === 'const' ? 'const' : (state.source === 'decl' ? 'decl' : (state.source === 'tx' ? 'tx' : ''))));
     resultsEl.innerHTML = data.map(e => `
       <div class="entry-card ${cardClass}">
         <span class="entry-word">${e.heading}</span>
@@ -812,6 +863,8 @@
   btnUcc.addEventListener('click', () => switchSource('ucc'));
   btnGuides.addEventListener('click', () => switchSource('guides'));
   btnConst.addEventListener('click', () => switchSource('const'));
+  btnDecl.addEventListener('click', () => switchSource('decl'));
+  btnTexas.addEventListener('click', () => switchSource('tx'));
   let searchDebounce = null;
   searchInput.addEventListener('input', (e) => {
     const value = e.target.value;
