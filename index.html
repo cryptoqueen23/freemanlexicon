@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reference Library — Webster's (1913), Black's Law (1910) &amp; UCC</title>
+
+<!-- Bootstrap 5 (free, CDN) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#20241f;
+    --paper:#f7f4ec;
+    --paper-2:#efe9d8;
+    --gold:#8a6d3b;
+    --law-navy:#1f2d3d;
+    --ucc-green:#3d5c3a;
+    --guides-blue:#2c4a63;
+    --line:#d8cfb8;
+  }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+  }
+  .brand-mark{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    letter-spacing:.02em;
+  }
+  .navbar{
+    background:var(--ink) !important;
+    border-bottom:3px solid var(--gold);
+  }
+  .nav-tab-btn{
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+  }
+  .nav-tab-btn.active-webster{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:#fff;
+  }
+  .nav-tab-btn.active-law{
+    background:var(--law-navy);
+    border-color:var(--law-navy);
+    color:#fff;
+  }
+  .nav-tab-btn.active-ucc{
+    background:var(--ucc-green);
+    border-color:var(--ucc-green);
+    color:#fff;
+  }
+  .nav-tab-btn.active-guides{
+    background:var(--guides-blue);
+    border-color:var(--guides-blue);
+    color:#fff;
+  }
+  #quizToggle.active{
+    background:var(--ink);
+    color:#fff;
+  }
+  .quiz-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:4px solid var(--ink);
+    border-radius:2px;
+    padding:1.5rem;
+  }
+  .quiz-question{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    font-size:1.4rem;
+    margin-bottom:1rem;
+  }
+  .quiz-option{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:.75rem 1rem;
+    margin-bottom:.6rem;
+    border:1px solid var(--line);
+    background:var(--paper);
+    border-radius:2px;
+    cursor:pointer;
+    line-height:1.4;
+  }
+  .quiz-option:hover{ background:var(--paper-2); }
+  .quiz-option.correct{ background:#d7ead9; border-color:#5a9a63; }
+  .quiz-option.incorrect{ background:#f3d7d7; border-color:#c46a6a; }
+  .quiz-score{
+    font-size:.9rem;
+    color:#7a7368;
+    margin-bottom:1rem;
+  }
+  .guide-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:4px solid var(--guides-blue);
+    border-radius:2px;
+    padding:1.2rem 1.4rem;
+    margin-bottom:.9rem;
+  }
+  .guide-title{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    font-size:1.25rem;
+  }
+  .guide-category{
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--guides-blue);
+    font-weight:600;
+  }
+  .guide-body{
+    margin-top:.5rem;
+    line-height:1.6;
+    color:#33362f;
+  }
+  .guide-related{
+    margin-top:.7rem;
+    font-size:.82rem;
+    color:#7a7368;
+  }
+  #searchInput{
+    border:2px solid var(--ink);
+    border-radius:2px;
+    font-size:1.15rem;
+    padding:.7rem 1rem;
+  }
+  #searchInput:focus{
+    box-shadow:0 0 0 .15rem rgba(138,109,59,.35);
+    border-color:var(--gold);
+  }
+  .entry-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:4px solid var(--gold);
+    border-radius:2px;
+    padding:1.1rem 1.3rem;
+    margin-bottom:.85rem;
+  }
+  .entry-card.law{ border-left-color:var(--law-navy); }
+  .entry-card.ucc{ border-left-color:var(--ucc-green); }
+  .entry-word{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    font-size:1.35rem;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    margin-right:.5rem;
+  }
+  .entry-pos{
+    font-style:italic;
+    color:#7a7368;
+    font-size:.95rem;
+  }
+  .entry-def{
+    margin-top:.35rem;
+    line-height:1.55;
+    color:#33362f;
+  }
+  .source-banner{
+    font-size:.82rem;
+    color:#6b6558;
+    border-bottom:1px dashed var(--line);
+    padding-bottom:.6rem;
+    margin-bottom:1.2rem;
+  }
+  .empty-state{
+    text-align:center;
+    padding:3rem 1rem;
+    color:#8a8478;
+    font-family:'Source Serif 4',serif;
+    font-size:1.1rem;
+  }
+  .letter-pill{
+    display:inline-block;
+    width:2.1rem;height:2.1rem;
+    line-height:2.1rem;
+    text-align:center;
+    border-radius:50%;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+    font-size:.85rem;
+    margin:.15rem;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .letter-pill:hover{ background:var(--gold); color:#fff; }
+  .result-count{
+    font-size:.9rem;
+    color:#7a7368;
+  }
+  .support-section{
+    background:var(--ink);
+    padding:2.5rem 0;
+    margin-top:1rem;
+  }
+  .support-card{
+    display:flex;
+    gap:2.5rem;
+    flex-wrap:wrap;
+  }
+  .support-col{ flex:1 1 280px; }
+  .support-title{
+    font-family:'Source Serif 4',serif;
+    font-weight:700;
+    font-size:1.15rem;
+    color:#f4efe2;
+    margin-bottom:.5rem;
+  }
+  .support-text{
+    color:#c9c3b4;
+    font-size:.9rem;
+    line-height:1.5;
+    margin-bottom:.8rem;
+  }
+  .crypto-box{
+    background:#2a2f27;
+    border:1px solid #454a41;
+    border-radius:4px;
+    padding:1rem 1.1rem;
+  }
+  .crypto-label{
+    color:#a89c6f;
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-weight:600;
+    margin-bottom:.35rem;
+  }
+  .crypto-address{
+    font-family:monospace;
+    font-size:.85rem;
+    color:#f4efe2;
+    word-break:break-all;
+  }
+  .flywheel-links{
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+  }
+  .flywheel-links a{
+    color:#f4efe2;
+    text-decoration:none;
+    border-bottom:1px solid #454a41;
+    padding-bottom:.35rem;
+    font-size:.95rem;
+  }
+  .flywheel-links a:hover{ color:var(--gold); border-color:var(--gold); }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark py-3">
+  <div class="container">
+    <span class="navbar-brand brand-mark fs-4 mb-0">Reference Library</span>
+    <span class="text-white-50 small">Public-domain reference, free to use</span>
+  </div>
+</nav>
+
+<div class="container py-4">
+
+  <!-- Dictionary switcher -->
+  <div class="d-flex gap-2 mb-3 flex-wrap">
+    <button id="btnWebster" class="btn nav-tab-btn active-webster px-3 py-2">Webster's Revised Unabridged (1913)</button>
+    <button id="btnLaw" class="btn nav-tab-btn px-3 py-2">Black's Law Dictionary (2nd Ed., 1910)</button>
+    <button id="btnUcc" class="btn nav-tab-btn px-3 py-2">Uniform Commercial Code</button>
+    <button id="btnGuides" class="btn nav-tab-btn px-3 py-2">Legal Literacy Guides</button>
+  </div>
+
+  <div class="source-banner" id="sourceBanner"></div>
+
+  <!-- Search + quiz toggle -->
+  <div class="mb-3 d-flex gap-2">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search a word or phrase…" autocomplete="off">
+    <button id="quizToggle" class="btn btn-outline-dark text-nowrap">Quiz Mode</button>
+  </div>
+
+  <!-- A–Z quick filter -->
+  <div class="mb-3" id="alphaBar"></div>
+
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <span class="result-count" id="resultCount"></span>
+    <button id="clearBtn" class="btn btn-sm btn-outline-secondary" style="display:none;">Clear filters</button>
+  </div>
+
+  <!-- Results -->
+  <div id="results"></div>
+
+  <!-- Quiz -->
+  <div id="quizArea" style="display:none;"></div>
+
+</div>
+
+<section class="support-section">
+  <div class="container">
+    <div class="support-card">
+      <div class="support-col">
+        <div class="support-title">Support This Project</div>
+        <p class="support-text">This site is free and built entirely on public-domain material. If it's useful to you, a donation helps keep it running and growing.</p>
+        <div class="crypto-box">
+          <div class="crypto-label">Solana (SOL)</div>
+          <div class="crypto-address" id="cryptoAddress">6UTotAMeUqtytR9pdUmh6h2B2StiBceiwiQMqMYSPzXU</div>
+          <button id="copyAddrBtn" class="btn btn-sm btn-outline-dark mt-2">Copy address</button>
+        </div>
+      </div>
+      <div class="support-col">
+        <div class="support-title">More from Phoenix Securitas</div>
+        <p class="support-text">This reference library is one part of a larger ecosystem. Explore the rest:</p>
+        <div class="flywheel-links">
+          <a href="https://tree.phoenixsecuritas.com" target="_blank" rel="noopener">Phoenix Securitas — All Links</a>
+          <a href="https://nocaptravel.com" target="_blank" rel="noopener">No Cap Travel</a>
+          <a href="https://waves.freedomsfighter.com" target="_blank" rel="noopener">True Wolf Waves</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="text-center text-muted py-4 small">
+  Webster's Revised Unabridged Dictionary (1913 ed., via Project Gutenberg) — public domain.<br>
+  Black's Law Dictionary, 2nd Edition (1910) by Henry Campbell Black — public domain.<br>
+  Uniform Commercial Code — enacted statutory text is public domain (government-edict works aren't copyrightable); ALI/ULC official commentary is not included.<br>
+  Modern editions of Black's Law Dictionary remain copyrighted and are not used here.
+</footer>
+
+<script src="webster-data.js"></script>
+<script src="law-data.js"></script>
+<script src="ucc-data.js"></script>
+<script src="literacy-data.js"></script>
+<script>
+  const state = { source: 'webster', query: '', filter: null, quiz: false };
+
+  const btnWebster = document.getElementById('btnWebster');
+  const btnLaw = document.getElementById('btnLaw');
+  const btnUcc = document.getElementById('btnUcc');
+  const btnGuides = document.getElementById('btnGuides');
+  const searchInput = document.getElementById('searchInput');
+  const resultsEl = document.getElementById('results');
+  const quizArea = document.getElementById('quizArea');
+  const resultCountEl = document.getElementById('resultCount');
+  const sourceBanner = document.getElementById('sourceBanner');
+  const alphaBar = document.getElementById('alphaBar');
+  const clearBtn = document.getElementById('clearBtn');
+  const quizToggle = document.getElementById('quizToggle');
+
+  // Normalize each source into a common shape for rendering:
+  // { heading, sub, def, filterKey }
+  function normalized(){
+    if (state.source === 'webster'){
+      return WEBSTER_1913.map(e => ({ heading: e.word, sub: e.pos, def: e.def, filterKey: e.word[0] }));
+    }
+    if (state.source === 'law'){
+      return BLACKS_LAW_1910.map(e => ({ heading: e.word, sub: e.pos, def: e.def, filterKey: e.word[0] }));
+    }
+    if (state.source === 'ucc'){
+      return UCC_SECTIONS.map(e => ({ heading: e.code, sub: e.title, def: e.def, filterKey: e.article }));
+    }
+    // guides
+    return LITERACY_GUIDES.map(e => ({ heading: e.title, sub: e.category, def: e.body, filterKey: e.category, related: e.related }));
+  }
+
+  function updateTabs(){
+    btnWebster.classList.toggle('active-webster', state.source === 'webster');
+    btnLaw.classList.toggle('active-law', state.source === 'law');
+    btnUcc.classList.toggle('active-ucc', state.source === 'ucc');
+    btnGuides.classList.toggle('active-guides', state.source === 'guides');
+    quizToggle.style.display = state.source === 'guides' ? 'none' : 'inline-block';
+    if (state.source === 'webster'){
+      sourceBanner.textContent = `${WEBSTER_1913.length.toLocaleString()} entries — Webster's Revised Unabridged Dictionary, 1913 edition (public domain).`;
+    } else if (state.source === 'law'){
+      sourceBanner.textContent = `${BLACKS_LAW_1910.length} core legal terms — Black's Law Dictionary, 2nd Edition, 1910 (public domain; curated subset, not the full ~12,900-entry text).`;
+    } else if (state.source === 'ucc'){
+      sourceBanner.textContent = `${UCC_SECTIONS.length} core sections — Uniform Commercial Code, Articles 1, 2, 3 & 9 (enacted statutory text is public domain; curated subset, not the full Code).`;
+    } else {
+      sourceBanner.textContent = `${LITERACY_GUIDES.length} plain-language guides for general legal literacy. Not legal advice — for orientation only; consult a licensed attorney for your specific situation.`;
+    }
+  }
+
+  function buildFilterBar(){
+    alphaBar.innerHTML = '';
+    if (state.source === 'ucc'){
+      const articles = [...new Set(UCC_SECTIONS.map(e => e.article))].sort((a,b) => Number(a) - Number(b));
+      const labels = { '1': 'Art. 1', '2': 'Art. 2', '3': 'Art. 3', '9': 'Art. 9' };
+      articles.forEach(a => {
+        const pill = pillEl(labels[a] || `Art. ${a}`, true);
+        pill.addEventListener('click', () => { state.filter = state.filter === a ? null : a; render(); });
+        alphaBar.appendChild(pill);
+      });
+      return;
+    }
+    if (state.source === 'guides'){
+      const cats = [...new Set(LITERACY_GUIDES.map(e => e.category))];
+      cats.forEach(c => {
+        const pill = pillEl(c, true);
+        pill.addEventListener('click', () => { state.filter = state.filter === c ? null : c; render(); });
+        alphaBar.appendChild(pill);
+      });
+      return;
+    }
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const data = normalized();
+    letters.forEach(l => {
+      const has = data.some(e => e.filterKey === l);
+      const pill = document.createElement('span');
+      pill.className = 'letter-pill';
+      pill.textContent = l;
+      pill.style.opacity = has ? '1' : '.3';
+      pill.style.pointerEvents = has ? 'auto' : 'none';
+      pill.addEventListener('click', () => { state.filter = state.filter === l ? null : l; render(); });
+      alphaBar.appendChild(pill);
+    });
+  }
+
+  function pillEl(label){
+    const pill = document.createElement('span');
+    pill.className = 'letter-pill';
+    pill.style.width = 'auto';
+    pill.style.padding = '0 .6rem';
+    pill.style.borderRadius = '1rem';
+    pill.textContent = label;
+    return pill;
+  }
+
+  function render(){
+    updateTabs();
+
+    if (state.quiz){
+      resultsEl.style.display = 'none';
+      alphaBar.style.display = 'none';
+      quizArea.style.display = 'block';
+      document.getElementById('resultCount').parentElement.style.display = 'none';
+      renderQuiz();
+      return;
+    }
+    resultsEl.style.display = 'block';
+    alphaBar.style.display = 'block';
+    quizArea.style.display = 'none';
+    document.getElementById('resultCount').parentElement.style.display = 'flex';
+
+    let data = normalized();
+
+    if (state.filter){
+      data = data.filter(e => e.filterKey === state.filter);
+    }
+    if (state.query.trim()){
+      const q = state.query.trim().toLowerCase();
+      data = data.filter(e =>
+        e.heading.toLowerCase().includes(q) ||
+        (e.sub || '').toLowerCase().includes(q) ||
+        e.def.toLowerCase().includes(q)
+      );
+    }
+
+    if (state.source === 'ucc'){
+      data = [...data].sort((a,b) => a.heading.localeCompare(b.heading, undefined, { numeric: true }));
+    } else if (state.source !== 'guides'){
+      data = [...data].sort((a,b) => a.heading.localeCompare(b.heading));
+    }
+
+    resultCountEl.textContent = `${data.length} entr${data.length === 1 ? 'y' : 'ies'}`;
+    clearBtn.style.display = (state.query || state.filter) ? 'inline-block' : 'none';
+
+    if (data.length === 0){
+      resultsEl.innerHTML = `<div class="empty-state">No entries found. Try a different search.</div>`;
+      return;
+    }
+
+    // Webster's has ~98,800 entries — never dump the whole thing into the DOM at once.
+    const RENDER_CAP = 300;
+    if (state.source === 'webster' && !state.query.trim() && !state.filter){
+      resultsEl.innerHTML = `<div class="empty-state">Type a word above, or pick a letter, to browse ${WEBSTER_1913.length.toLocaleString()} entries.</div>`;
+      resultCountEl.textContent = '';
+      return;
+    }
+    let capped = false;
+    if (data.length > RENDER_CAP){
+      capped = true;
+      data = data.slice(0, RENDER_CAP);
+    }
+
+    if (state.source === 'guides'){
+      resultsEl.innerHTML = data.map(e => `
+        <div class="guide-card">
+          <div class="guide-category">${e.sub}</div>
+          <div class="guide-title">${e.heading}</div>
+          <div class="guide-body">${e.def}</div>
+          ${e.related && e.related.length ? `<div class="guide-related">Related terms: ${e.related.join(', ')}</div>` : ''}
+        </div>
+      `).join('');
+      return;
+    }
+
+    const cardClass = state.source === 'law' ? 'law' : (state.source === 'ucc' ? 'ucc' : '');
+    resultsEl.innerHTML = data.map(e => `
+      <div class="entry-card ${cardClass}">
+        <span class="entry-word">${e.heading}</span>
+        ${e.sub ? `<span class="entry-pos">${e.sub}</span>` : ''}
+        <div class="entry-def">${e.def}</div>
+      </div>
+    `).join('') + (capped ? `<div class="empty-state">Showing first ${RENDER_CAP} results — refine your search to narrow further.</div>` : '');
+  }
+
+  // ---------------- Quiz mode ----------------
+  let quizScore = { correct: 0, total: 0 };
+  let quizCurrent = null;
+
+  function shuffle(arr){
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function truncate(text, n){
+    return text.length > n ? text.slice(0, n).trim() + '…' : text;
+  }
+
+  function newQuizQuestion(){
+    const data = normalized().filter(e => e.def && e.def.length > 20);
+    const correct = data[Math.floor(Math.random() * data.length)];
+    const distractorPool = data.filter(e => e.heading !== correct.heading);
+    const distractors = shuffle(distractorPool).slice(0, 3);
+    const options = shuffle([correct, ...distractors]);
+    quizCurrent = { correct, options, answered: false };
+  }
+
+  function renderQuiz(){
+    if (!quizCurrent) { quizScore = { correct: 0, total: 0 }; newQuizQuestion(); }
+    const q = quizCurrent;
+    quizArea.innerHTML = `
+      <div class="quiz-card">
+        <div class="quiz-score">Score: ${quizScore.correct} / ${quizScore.total}</div>
+        <div class="quiz-question">What is the definition of "${q.correct.heading}"?</div>
+        <div id="quizOptions"></div>
+        <div id="quizNext" style="display:none;" class="mt-2">
+          <button class="btn btn-dark" id="quizNextBtn">Next question →</button>
+        </div>
+      </div>
+    `;
+    const optsEl = document.getElementById('quizOptions');
+    q.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.textContent = truncate(opt.def, 220);
+      btn.addEventListener('click', () => {
+        if (q.answered) return;
+        q.answered = true;
+        quizScore.total++;
+        const isCorrect = opt.heading === q.correct.heading;
+        if (isCorrect) quizScore.correct++;
+        btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+        [...optsEl.children].forEach(c => {
+          c.style.pointerEvents = 'none';
+          if (c.textContent === truncate(q.correct.def, 220)) c.classList.add('correct');
+        });
+        document.querySelector('.quiz-score').textContent = `Score: ${quizScore.correct} / ${quizScore.total}`;
+        document.getElementById('quizNext').style.display = 'block';
+      });
+      optsEl.appendChild(btn);
+    });
+    document.getElementById('quizNextBtn')?.addEventListener('click', () => {
+      newQuizQuestion();
+      renderQuiz();
+    });
+  }
+
+  function switchSource(src){
+    state.source = src; state.filter = null; searchInput.value=''; state.query=''; state.quiz = false;
+    quizCurrent = null;
+    quizToggle.classList.remove('active');
+    buildFilterBar(); render();
+  }
+
+  btnWebster.addEventListener('click', () => switchSource('webster'));
+  btnLaw.addEventListener('click', () => switchSource('law'));
+  btnUcc.addEventListener('click', () => switchSource('ucc'));
+  btnGuides.addEventListener('click', () => switchSource('guides'));
+  searchInput.addEventListener('input', (e) => {
+    state.query = e.target.value; state.filter = null; render();
+  });
+  clearBtn.addEventListener('click', () => {
+    state.query=''; state.filter=null; searchInput.value=''; render();
+  });
+  quizToggle.addEventListener('click', () => {
+    state.quiz = !state.quiz;
+    quizToggle.classList.toggle('active', state.quiz);
+    if (state.quiz){ quizCurrent = null; quizScore = { correct: 0, total: 0 }; }
+    render();
+  });
+
+  buildFilterBar();
+  render();
+
+  const copyAddrBtn = document.getElementById('copyAddrBtn');
+  copyAddrBtn?.addEventListener('click', () => {
+    const addr = document.getElementById('cryptoAddress').textContent.trim();
+    const fallback = () => {
+      const range = document.createRange();
+      range.selectNodeContents(document.getElementById('cryptoAddress'));
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      copyAddrBtn.textContent = 'Address selected — copy it';
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(addr).then(() => {
+        const original = copyAddrBtn.textContent;
+        copyAddrBtn.textContent = 'Copied!';
+        setTimeout(() => { copyAddrBtn.textContent = original; }, 1500);
+      }).catch(fallback);
+    } else {
+      fallback();
+    }
+  });
+</script>
+</body>
+</html>
