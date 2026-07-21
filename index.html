@@ -12,17 +12,17 @@
 
 <style>
   :root{
-    --ink:#20241f;
-    --paper:#f7f4ec;
-    --paper-2:#efe9d8;
-    --gold:#8a6d3b;
-    --law-navy:#1f2d3d;
-    --ucc-green:#3d5c3a;
-    --guides-blue:#2c4a63;
-    --const-red:#7a2e2e;
-    --decl-brown:#5c4326;
+    --ink:#0b2140;
+    --paper:#f8f9fb;
+    --paper-2:#e7ecf3;
+    --gold:#b3202a;
+    --law-navy:#0d2d52;
+    --ucc-green:#2f5d8a;
+    --guides-blue:#2c4a73;
+    --const-red:#8c1f2b;
+    --decl-brown:#1d3a5f;
     --tx-blue:#0f3d5c;
-    --line:#d8cfb8;
+    --line:#c9d4df;
   }
   body{
     background:var(--paper);
@@ -70,7 +70,7 @@
     border-radius:1px;
   }
   #sourceMenuLabel{ flex:1 1 auto; }
-  .menu-caret{ color:#8a8478; font-size:.8rem; flex:0 0 auto; }
+  .menu-caret{ color:#5a6879; font-size:.8rem; flex:0 0 auto; }
   .source-menu-panel{
     position:absolute;
     top:calc(100% + .4rem);
@@ -81,7 +81,7 @@
     background:#fff;
     border:1px solid var(--line);
     border-radius:2px;
-    box-shadow:0 8px 24px rgba(32,36,31,.15);
+    box-shadow:0 8px 24px rgba(11,33,64,.15);
     padding:.75rem;
   }
   .source-menu-group + .source-menu-group{ margin-top:.6rem; padding-top:.6rem; border-top:1px dashed var(--line); }
@@ -89,7 +89,7 @@
     font-size:.72rem;
     text-transform:uppercase;
     letter-spacing:.06em;
-    color:#8a8478;
+    color:#5a6879;
     font-weight:600;
     margin-bottom:.3rem;
     padding:0 .3rem;
@@ -148,7 +148,7 @@
   .quiz-option.incorrect{ background:#f3d7d7; border-color:#c46a6a; }
   .quiz-score{
     font-size:.9rem;
-    color:#7a7368;
+    color:#5c6b7e;
     margin-bottom:1rem;
   }
   .guide-card{
@@ -174,12 +174,12 @@
   .guide-body{
     margin-top:.5rem;
     line-height:1.6;
-    color:#33362f;
+    color:#26364a;
   }
   .guide-related{
     margin-top:.7rem;
     font-size:.82rem;
-    color:#7a7368;
+    color:#5c6b7e;
   }
   #searchInput{
     border:2px solid var(--ink);
@@ -188,7 +188,7 @@
     padding:.7rem 1rem;
   }
   #searchInput:focus{
-    box-shadow:0 0 0 .15rem rgba(138,109,59,.35);
+    box-shadow:0 0 0 .15rem rgba(179,32,42,.35);
     border-color:var(--gold);
   }
   .hero{
@@ -201,7 +201,7 @@
     margin-bottom:.6rem;
   }
   .hero-sub{
-    color:#4a4638;
+    color:#3a4a5c;
     font-size:1.05rem;
     line-height:1.6;
     max-width:46rem;
@@ -222,7 +222,7 @@
     padding:.3rem .75rem;
     font-size:.82rem;
     font-weight:600;
-    color:#4a4638;
+    color:#3a4a5c;
   }
   .source-badge .check{
     color:var(--gold);
@@ -243,7 +243,7 @@
     margin-bottom:.4rem;
   }
   .why-card-body{
-    color:#4a4638;
+    color:#3a4a5c;
     line-height:1.6;
     font-size:.95rem;
     margin:0;
@@ -275,7 +275,7 @@
   .compare-col-title.decl{ color:var(--decl-brown); border-color:var(--decl-brown); }
   .compare-col-title.tx{ color:var(--tx-blue); border-color:var(--tx-blue); }
   .compare-empty{
-    color:#8a8478;
+    color:#5a6879;
     font-size:.9rem;
     font-style:italic;
   }
@@ -302,17 +302,17 @@
   }
   .entry-pos{
     font-style:italic;
-    color:#7a7368;
+    color:#5c6b7e;
     font-size:.95rem;
   }
   .entry-def{
     margin-top:.35rem;
     line-height:1.55;
-    color:#33362f;
+    color:#26364a;
   }
   .source-banner{
     font-size:.82rem;
-    color:#6b6558;
+    color:#5c6b7a;
     border-bottom:1px dashed var(--line);
     padding-bottom:.6rem;
     margin-bottom:1.2rem;
@@ -320,7 +320,7 @@
   .empty-state{
     text-align:center;
     padding:3rem 1rem;
-    color:#8a8478;
+    color:#5a6879;
     font-family:'Source Serif 4',serif;
     font-size:1.1rem;
   }
@@ -342,7 +342,7 @@
   .letter-pill:hover{ background:var(--gold); color:#fff; }
   .result-count{
     font-size:.9rem;
-    color:#7a7368;
+    color:#5c6b7e;
   }
   .support-section{
     background:var(--ink);
@@ -359,23 +359,23 @@
     font-family:'Source Serif 4',serif;
     font-weight:700;
     font-size:1.15rem;
-    color:#f4efe2;
+    color:#eef2f7;
     margin-bottom:.5rem;
   }
   .support-text{
-    color:#c9c3b4;
+    color:#b8c4d1;
     font-size:.9rem;
     line-height:1.5;
     margin-bottom:.8rem;
   }
   .crypto-box{
-    background:#2a2f27;
-    border:1px solid #454a41;
+    background:#0f2540;
+    border:1px solid #1c3555;
     border-radius:4px;
     padding:1rem 1.1rem;
   }
   .crypto-label{
-    color:#a89c6f;
+    color:#9fb3c8;
     font-size:.78rem;
     text-transform:uppercase;
     letter-spacing:.05em;
@@ -385,7 +385,7 @@
   .crypto-address{
     font-family:monospace;
     font-size:.85rem;
-    color:#f4efe2;
+    color:#eef2f7;
     word-break:break-all;
   }
   .flywheel-links{
@@ -394,9 +394,9 @@
     gap:.5rem;
   }
   .flywheel-links a{
-    color:#f4efe2;
+    color:#eef2f7;
     text-decoration:none;
-    border-bottom:1px solid #454a41;
+    border-bottom:1px solid #1c3555;
     padding-bottom:.35rem;
     font-size:.95rem;
   }
