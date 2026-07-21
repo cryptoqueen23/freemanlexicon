@@ -271,6 +271,9 @@
   .compare-col-title.webster{ color:var(--gold); border-color:var(--gold); }
   .compare-col-title.law{ color:var(--law-navy); border-color:var(--law-navy); }
   .compare-col-title.ucc{ color:var(--ucc-green); border-color:var(--ucc-green); }
+  .compare-col-title.const{ color:var(--const-red); border-color:var(--const-red); }
+  .compare-col-title.decl{ color:var(--decl-brown); border-color:var(--decl-brown); }
+  .compare-col-title.tx{ color:var(--tx-blue); border-color:var(--tx-blue); }
   .compare-empty{
     color:#8a8478;
     font-size:.9rem;
@@ -801,12 +804,24 @@
   }
 
   // ---------------- Compare mode ----------------
-  // Looks a word up across all three dictionary sources at once, independent
-  // of whichever tab (Webster/Law/UCC) happens to be active.
+  // Looks a word up across all reference sources at once, independent
+  // of whichever tab happens to be active. Guides are excluded — they're
+  // situational essays, not term lookups, so they don't fit the same
+  // side-by-side comparison shape.
   function findEntryMatches(list, keyFn, q, cap){
     const exact = list.filter(e => keyFn(e).toLowerCase() === q);
     if (exact.length) return exact.slice(0, cap);
     return list.filter(e => keyFn(e).toLowerCase().includes(q)).slice(0, cap);
+  }
+
+  function findSectionMatches(list, codeFn, titleFn, q, cap, sortNumeric){
+    let matches = list.filter(e =>
+      titleFn(e).toLowerCase().includes(q) || e.def.toLowerCase().includes(q)
+    );
+    if (sortNumeric){
+      matches = matches.sort((a,b) => codeFn(a).localeCompare(codeFn(b), undefined, { numeric: true }));
+    }
+    return matches.slice(0, cap);
   }
 
   function compareColumn(title, cls, items, cardHtml){
@@ -821,17 +836,25 @@
   function renderCompare(){
     const q = state.query.trim().toLowerCase();
     if (!q){
-      compareArea.innerHTML = `<div class="empty-state">Type a word above to compare its definition across Webster's, Black's Law, and the UCC.</div>`;
+      compareArea.innerHTML = `<div class="empty-state">Type a word above to compare its definition across every source — Webster's, Black's Law, the UCC, the U.S. and Texas Constitutions, and the Declaration of Independence.</div>`;
       return;
     }
 
     const CAP = 5;
     const websterMatches = findEntryMatches(WEBSTER_1913, e => e.word, q, CAP);
     const lawMatches = findEntryMatches(BLACKS_LAW_1910, e => e.word, q, CAP);
-    const uccMatches = UCC_SECTIONS
-      .filter(e => e.title.toLowerCase().includes(q) || e.def.toLowerCase().includes(q))
-      .sort((a,b) => a.code.localeCompare(b.code, undefined, { numeric: true }))
-      .slice(0, CAP);
+    const uccMatches = findSectionMatches(UCC_SECTIONS, e => e.code, e => e.title, q, CAP, true);
+    const constMatches = findSectionMatches(CONSTITUTION_SECTIONS, e => e.code, e => e.title, q, CAP, false);
+    const declMatches = findSectionMatches(DECLARATION_SECTIONS, e => e.code, e => e.title, q, CAP, false);
+    const txMatches = findSectionMatches(TEXAS_CONSTITUTION_SECTIONS, e => e.code, e => e.title, q, CAP, false);
+
+    const sectionCard = (cls) => (e) => `
+      <div class="entry-card ${cls}">
+        <span class="entry-word">${e.code}</span>
+        <span class="entry-pos">${e.title}</span>
+        <div class="entry-def">${e.def}</div>
+      </div>
+    `;
 
     compareArea.innerHTML = `
       <div class="compare-grid">
@@ -849,13 +872,10 @@
             <div class="entry-def">${e.def}</div>
           </div>
         `)}
-        ${compareColumn('UCC', 'ucc', uccMatches, e => `
-          <div class="entry-card ucc">
-            <span class="entry-word">${e.code}</span>
-            <span class="entry-pos">${e.title}</span>
-            <div class="entry-def">${e.def}</div>
-          </div>
-        `)}
+        ${compareColumn('UCC', 'ucc', uccMatches, sectionCard('ucc'))}
+        ${compareColumn('U.S. Constitution', 'const', constMatches, sectionCard('const'))}
+        ${compareColumn('Declaration of Independence', 'decl', declMatches, sectionCard('decl'))}
+        ${compareColumn('Texas Constitution', 'tx', txMatches, sectionCard('tx'))}
       </div>
     `;
   }
